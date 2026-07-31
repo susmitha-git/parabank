@@ -23,6 +23,9 @@ public class TransferFundsPage {
     }
 
     public void transfer(String amount) {
+
+      wait.until(ExpectedConditions.presenceOfElementLocated(amountField));
+
         driver.findElement(amountField).sendKeys(amount);
 
         Select fromDropdown = new Select(driver.findElement(fromAccountDropdown));
