@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -14,7 +15,14 @@ public class LoginTest {
 
     @BeforeEach
     void setUp() {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        if (System.getenv("CI") != null) {
+            options.addArguments("--headless=new");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+        }
+        driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
         driver.get("http://localhost:8080/parabank/index.htm");
     }
 
@@ -24,9 +32,6 @@ public class LoginTest {
         loginPage.login("john", "demo");
 
         String pageSource = driver.getPageSource();
-        System.out.println("PAGE TITLE: " + driver.getTitle());
-        System.out.println("PAGE SOURCE SNIPPET: " + pageSource.substring(0, Math.min(500, pageSource.length())));
-
         assertTrue(pageSource.contains("Accounts Overview"));
     }
 
