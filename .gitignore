@@ -2,6 +2,7 @@
 /target/
 hs_err_*.log
 *.log
+/src/test/resources/WEB-INF/db/
 
 # Parasoft-specific:
 .parasoft
