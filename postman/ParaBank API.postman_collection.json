@@ -1,26 +1,18 @@
 {
   "info": {
+    "_postman_id": "9b8f0465-b447-425c-a5b5-7c71d02bf981",
     "name": "ParaBank API",
     "description": "Accounts & Transactions API coverage for ParaBank practice project (JIRA ticket: API test coverage - Accounts & Transactions). Responses are XML by default. Uses the default seeded john/demo login so this works against any fresh ParaBank instance (local or CI) - all IDs are captured dynamically from responses, nothing is hardcoded.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56317208",
+    "_collection_link": "https://go.postman.co/collection/56317208-9b8f0465-b447-425c-a5b5-7c71d02bf981?source=collection_link"
   },
-  "variable": [
-    { "key": "baseUrl", "value": "http://localhost:8080/parabank/services/bank" },
-    { "key": "customerId", "value": "" },
-    { "key": "accountId", "value": "" },
-    { "key": "toAccountId", "value": "" },
-    { "key": "transactionId", "value": "" }
-  ],
   "item": [
     {
       "name": "Setup",
       "item": [
         {
           "name": "Initialize DB (ensures john/demo seed data exists)",
-          "request": {
-            "method": "POST",
-            "url": "{{baseUrl}}/initializeDB"
-          },
           "event": [
             {
               "listen": "test",
@@ -29,10 +21,25 @@
                   "pm.test(\"Status code is 204 (No Content - success)\", function () {",
                   "    pm.response.to.have.status(204);",
                   "});"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/initializeDB",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "initializeDB"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -41,10 +48,6 @@
       "item": [
         {
           "name": "Login (john/demo - default seeded user)",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/login/john/demo"
-          },
           "event": [
             {
               "listen": "test",
@@ -61,10 +64,27 @@
                   "    pm.collectionVariables.set(\"customerId\", match[1]);",
                   "    console.log(\"Captured customerId:\", match[1]);",
                   "}"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/login/john/demo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login",
+                "john",
+                "demo"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -73,10 +93,6 @@
       "item": [
         {
           "name": "Get Customer Accounts",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/customers/{{customerId}}/accounts"
-          },
           "event": [
             {
               "listen": "test",
@@ -93,17 +109,30 @@
                   "    pm.collectionVariables.set(\"accountId\", match[1]);",
                   "    console.log(\"Captured accountId:\", match[1]);",
                   "}"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/customers/{{customerId}}/accounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "customers",
+                "{{customerId}}",
+                "accounts"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Account by Id",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/accounts/{{accountId}}"
-          },
           "event": [
             {
               "listen": "test",
@@ -118,17 +147,29 @@
                   "pm.test(\"Response contains a type\", function () {",
                   "    pm.expect(pm.response.text()).to.include(\"<type>\");",
                   "});"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/accounts/{{accountId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "accounts",
+                "{{accountId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Account by Id - Invalid Id (Edge Case)",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/accounts/999999999"
-          },
           "event": [
             {
               "listen": "test",
@@ -138,17 +179,29 @@
                   "    console.log(\"Status for invalid account:\", pm.response.code);",
                   "    console.log(\"Body:\", pm.response.text());",
                   "});"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/accounts/999999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "accounts",
+                "999999999"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Create Account",
-          "request": {
-            "method": "POST",
-            "url": "{{baseUrl}}/createAccount?customerId={{customerId}}&newAccountType=0&fromAccountId={{accountId}}"
-          },
           "event": [
             {
               "listen": "test",
@@ -165,17 +218,42 @@
                   "    pm.collectionVariables.set(\"toAccountId\", match[1]);",
                   "    console.log(\"Captured toAccountId:\", match[1]);",
                   "}"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/createAccount?customerId={{customerId}}&newAccountType=0&fromAccountId={{accountId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "createAccount"
+              ],
+              "query": [
+                {
+                  "key": "customerId",
+                  "value": "{{customerId}}"
+                },
+                {
+                  "key": "newAccountType",
+                  "value": "0"
+                },
+                {
+                  "key": "fromAccountId",
+                  "value": "{{accountId}}"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Deposit Funds",
-          "request": {
-            "method": "POST",
-            "url": "{{baseUrl}}/deposit?accountId={{accountId}}&amount=50"
-          },
           "event": [
             {
               "listen": "test",
@@ -187,17 +265,38 @@
                   "pm.test(\"Response indicates success\", function () {",
                   "    pm.expect(pm.response.text().toLowerCase()).to.include(\"success\");",
                   "});"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/deposit?accountId={{accountId}}&amount=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "deposit"
+              ],
+              "query": [
+                {
+                  "key": "accountId",
+                  "value": "{{accountId}}"
+                },
+                {
+                  "key": "amount",
+                  "value": "50"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Withdraw Funds",
-          "request": {
-            "method": "POST",
-            "url": "{{baseUrl}}/withdraw?accountId={{accountId}}&amount=50"
-          },
           "event": [
             {
               "listen": "test",
@@ -206,17 +305,38 @@
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
                   "});"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/withdraw?accountId={{accountId}}&amount=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "withdraw"
+              ],
+              "query": [
+                {
+                  "key": "accountId",
+                  "value": "{{accountId}}"
+                },
+                {
+                  "key": "amount",
+                  "value": "50"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Withdraw More Than Balance (Edge Case - overdraft bug from DB testing)",
-          "request": {
-            "method": "POST",
-            "url": "{{baseUrl}}/withdraw?accountId={{toAccountId}}&amount=999999"
-          },
           "event": [
             {
               "listen": "test",
@@ -226,17 +346,38 @@
                   "    console.log(\"Status:\", pm.response.code);",
                   "    console.log(\"Body:\", pm.response.text());",
                   "});"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/withdraw?accountId={{toAccountId}}&amount=999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "withdraw"
+              ],
+              "query": [
+                {
+                  "key": "accountId",
+                  "value": "{{toAccountId}}"
+                },
+                {
+                  "key": "amount",
+                  "value": "999999"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Transfer Funds",
-          "request": {
-            "method": "POST",
-            "url": "{{baseUrl}}/transfer?fromAccountId={{accountId}}&toAccountId={{toAccountId}}&amount=25"
-          },
           "event": [
             {
               "listen": "test",
@@ -245,10 +386,39 @@
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
                   "});"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transfer?fromAccountId={{accountId}}&toAccountId={{toAccountId}}&amount=25",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transfer"
+              ],
+              "query": [
+                {
+                  "key": "fromAccountId",
+                  "value": "{{accountId}}"
+                },
+                {
+                  "key": "toAccountId",
+                  "value": "{{toAccountId}}"
+                },
+                {
+                  "key": "amount",
+                  "value": "25"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -257,10 +427,6 @@
       "item": [
         {
           "name": "Get Transactions for Account",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/accounts/{{accountId}}/transactions"
-          },
           "event": [
             {
               "listen": "test",
@@ -277,17 +443,30 @@
                   "    pm.collectionVariables.set(\"transactionId\", match[1]);",
                   "    console.log(\"Captured transactionId:\", match[1]);",
                   "}"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/accounts/{{accountId}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "accounts",
+                "{{accountId}}",
+                "transactions"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Transactions by Amount",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/accounts/{{accountId}}/transactions/amount/50"
-          },
           "event": [
             {
               "listen": "test",
@@ -296,17 +475,32 @@
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
                   "});"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/accounts/{{accountId}}/transactions/amount/50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "accounts",
+                "{{accountId}}",
+                "transactions",
+                "amount",
+                "50"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Transaction by Id",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/transactions/{{transactionId}}"
-          },
           "event": [
             {
               "listen": "test",
@@ -318,12 +512,253 @@
                   "pm.test(\"Response contains correct transaction id\", function () {",
                   "    pm.expect(pm.response.text()).to.include(`<id>${pm.collectionVariables.get(\"transactionId\")}</id>`);",
                   "});"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/{{transactionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions",
+                "{{transactionId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
+    },
+    {
+      "name": "Create Account - Additional Test Cases",
+      "item": [
+        {
+          "name": "Create SAVINGS Account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var match = pm.response.text().match(/<id>(\\d+)<\\/id>/);",
+                  "pm.test(\"Response returns a new account id\", function () {",
+                  "    pm.expect(match).to.not.be.null;",
+                  "});",
+                  "if (match) {",
+                  "    console.log(\"Captured savings account id:\", match[1]);",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/createAccount?customerId={{customerId}}&newAccountType=1&fromAccountId={{accountId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "createAccount"
+              ],
+              "query": [
+                {
+                  "key": "customerId",
+                  "value": "{{customerId}}"
+                },
+                {
+                  "key": "newAccountType",
+                  "value": "1"
+                },
+                {
+                  "key": "fromAccountId",
+                  "value": "{{accountId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Account - Invalid Customer Id (observe behavior)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "console.log(\"Status for invalid customerId:\", pm.response.code);",
+                  "console.log(\"Body:\", pm.response.text());",
+                  "pm.test(\"Status code is 400 for invalid customerId\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/createAccount?customerId=999999999&newAccountType=0&fromAccountId={{accountId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "createAccount"
+              ],
+              "query": [
+                {
+                  "key": "customerId",
+                  "value": "999999999"
+                },
+                {
+                  "key": "newAccountType",
+                  "value": "0"
+                },
+                {
+                  "key": "fromAccountId",
+                  "value": "{{accountId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Account - Invalid From Account Id (observe behavior)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "console.log(\"Status for invalid fromAccountId:\", pm.response.code);",
+                  "console.log(\"Body:\", pm.response.text());",
+                  "pm.test(\"Status code is 400 for invalid fromAccountId\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/createAccount?customerId={{customerId}}&newAccountType=0&fromAccountId=999999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "createAccount"
+              ],
+              "query": [
+                {
+                  "key": "customerId",
+                  "value": "{{customerId}}"
+                },
+                {
+                  "key": "newAccountType",
+                  "value": "0"
+                },
+                {
+                  "key": "fromAccountId",
+                  "value": "999999999"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Account - Missing Account Type (observe behavior)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "console.log(\"Status for missing newAccountType:\", pm.response.code);",
+                  "console.log(\"Body:\", pm.response.text());",
+                  "pm.test(\"Status code is 200 (defaults to CHECKING when type is missing)\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Account type defaults to CHECKING\", function () {",
+                  "    pm.expect(pm.response.text()).to.include(\"<type>CHECKING</type>\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/createAccount?customerId={{customerId}}&fromAccountId={{accountId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "createAccount"
+              ],
+              "query": [
+                {
+                  "key": "customerId",
+                  "value": "{{customerId}}"
+                },
+                {
+                  "key": "fromAccountId",
+                  "value": "{{accountId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/parabank/services/bank"
+    },
+    {
+      "key": "customerId",
+      "value": ""
+    },
+    {
+      "key": "accountId",
+      "value": ""
+    },
+    {
+      "key": "toAccountId",
+      "value": ""
+    },
+    {
+      "key": "transactionId",
+      "value": ""
     }
   ]
 }
